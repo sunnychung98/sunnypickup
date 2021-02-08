@@ -2,5 +2,33 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" data-layout-decorate="~{layout/main_layout}">
 <div class="content-wrapper" layout:fragment="content">
 
+    <style>
+        table {
+            border: 1px solid;
+        }
+
+        th,td{
+            border: 1px solid;
+        }
+
+    </style>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>코드</th>
+                    <th>이름</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="test, status : ${list}">
+                    <td th:text="${test.seqId}"></td>
+                    <td th:text="${test.setName}"></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
 </div>
 </html>
