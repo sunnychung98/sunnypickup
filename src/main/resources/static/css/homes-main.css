@@ -1,0 +1,112 @@
+#bxslider img{
+    width:1400px;
+    height:600px;
+    border-radius:30px;
+}
+#bxslider{
+    border-radius:30px;
+}
+
+.bx-wrapper {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    padding:0;
+    margin:0;
+}
+.col-3 {
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.card-body {
+    text-align:center;
+    padding-top:10px;
+    height:150px;
+    flex: none;
+    overflow: hidden;
+}
+
+
+
+.storeThumbnail img{
+    width:320px;
+    height: 207px;
+    border-radius: 5%;
+    text-align: center;
+
+}
+
+.thumbnail{
+    padding:0px;
+    margin:0px;
+    max-width:320px;
+    height: 207px;
+    overflow: hidden;
+    border-radius: 5%;
+
+}
+
+.thumbnail img {
+    width:100%;
+    text-align: center;
+    overflow: hidden;
+}
+
+.card-title {
+    padding:0px;
+    font-size: 17px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-title>a:link, .card-title>a:visited, .card-title>a:hover,
+.card-title>a:active {
+    text-decoration: none;
+}
+
+.card-text {
+    font-size: 14px;
+}
+
+.card-detail {
+    font-size: 11px;
+}
+
+
+.homeboard-container{
+    font-family: 'SCDream3';
+    margin: 0 auto;
+}
+
+.store-list-container{
+    font-family: 'SCDream3';
+    margin: 0 auto;
+}
+
+.profile_pic{
+    width:25px;
+    border-radius: 45%;
+
+}
+
+.product-name{
+    font-family:'SCDream5'
+}
+.store-name{
+    color:gray;
+    font-size:12px;
+}
+.store-discount{
+    font-family:'SCDream5';
+    font-size:20px;
+    color: #E98374
+}
+
+.store-price{
+    color: black;
+    font-family:'SCDream5';
+    font-size:20px;
+}

@@ -1,0 +1,86 @@
+#myShopping{
+    text-align:center;
+}
+#myShopping>div{
+    float:left;
+    text-align:center;
+    border:1px solid lightblue;
+    width:16%;
+    margin:5px;
+}
+#myShopping hr{
+    width:70%;
+}
+
+.col-3{
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.container{
+    max-width:1400px;
+    margin: 0 auto;
+    font-family: 'SCDream3';
+}
+#mypage-title {
+    margin-top: 40px;
+    margin-bottom: 15px;
+    margin-left:20px;
+    font-family:'SCDream5'
+}
+.profile-img{
+    width:200px;
+    height:200px;
+
+
+
+}
+
+.profile-img>img{
+    width:200px;
+    height:200px;
+    border-radius: 50%;
+    border: 0.5px solid #8f8d8d;
+
+}
+
+.profile-img{
+    margin: 0 auto;
+}
+
+.thumbnail{
+    padding:0px;
+    margin:0px;
+    width:220px;
+    height:160px;
+    overflow: hidden;
+    border-radius: 5%;
+}
+
+.thumbnail img {
+    width:220px;height:100%;
+    text-align: center;
+
+}
+
+.card-title {
+    text-align:center;
+    padding:0px;
+    font-size: 17px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.qna-content{
+    height:100px;
+    overflow:hidden;
+    text-overflow: ellipsis;
+
+}
+
+.qna-card{
+    border: 1px solid #c2c1c0;
+    border-radius: 5%
+}
