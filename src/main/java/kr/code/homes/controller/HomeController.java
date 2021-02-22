@@ -9,14 +9,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HomeController {
-
     @RequestMapping("/")
     public ModelAndView main(@RequestParam(value="id", required=false) String userId) {
         ModelAndView mav = new ModelAndView();
-
         mav.setViewName("views/contents/main");
-        mav.addObject("pageTitle", "홈페이지입니다!");
-
         return mav;
     }
 }
