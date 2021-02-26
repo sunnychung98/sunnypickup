@@ -23,7 +23,6 @@ public class ProcessInterceptor implements HandlerInterceptor {
             response.sendRedirect("/account/login");
             return false;
         }
-
         return true;
     }
 
