@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.code.homes.mapper.LoginMapper">
-    <select id="loginCheck" resultType="kr.code.homes.vo.MemberVO">
+<mapper namespace="com.myapp.sunnypickup.mapper.LoginMapper">
+    <select id="loginCheck" resultType="com.myapp.sunnypickup.vo.MemberVO">
         select userid,
                username,
                regcode,

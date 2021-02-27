@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      data-layout-decorate="~{layout/main_layout}">
+<div class="content-wrapper" layout:fragment="content">
+    <link href="css/homes-mypage.css" th:href="@{/css/homes-mypage.css}" rel="stylesheet">
+    <div class="container">
+    <h3 id="mypage-title">마이페이지</h3>
+
+    <div class="row">
+        <div class="col-3" th:replace="views/contents/mypage :: mypageMenu"><br/>
+        </div><!-- mypage 프로필부분 끝 -->
+
+        <!-- 마이페이지 요약기능 -->
+        <div class="col-9"><br/>
+
+            <div class="card border-light mb-3">
+                <div class="card-header">
+                    나의 작성 글
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</div>
+</html>

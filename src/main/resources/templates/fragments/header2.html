@@ -21,28 +21,26 @@
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">집들이</a>
+                        <a class="nav-link" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">스토어</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown01">
-                            <a class="dropdown-item" href="#" th:href="@{/homeboard/main}">집들이메인</a>
-                            <a class="dropdown-item" href="#">집들이베스트</a>
-                            <a class="dropdown-item" href="#">집들이테마</a>
-                        </div>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">스토어</a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown02">
-                            <a class="dropdown-item" href="#">스토어메인</a>
-                            <a class="dropdown-item" href="#">스토어베스트</a>
+                            <a class="dropdown-item" href="#" th:href="@{/shop/main}">스토어메인</a>
+                            <a class="dropdown-item" href="#" th:href="@{/shop/best}">스토어베스트</a>
+                            <a class="dropdown-item" href="#" th:href="@{/shop/theme}">스토어테마</a>
                         </div>
                     </li>
 
                     <li class="nav-item active">
-                        <a class="nav-link" href="#" th:href="@{/test}">질문과답변</a>
+                        <a class="nav-link" href="#">게시판</a>
                     </li>
 
                     <li class="nav-item active">
-                        <a class="nav-link" href="#" th:href="@{/mypage}">마이페이지</a>
+                        <a class="nav-link" href="#" th:href="@{/qna}">질문과답변</a>
+                    </li>
+
+
+
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" th:href="@{/mypage/dashboard}">마이페이지</a>
                     </li>
                 </ul>
                 <div class="searchBox homes-searchbox">
@@ -60,8 +58,8 @@
                     </li>
                     <li class="nav-item active">
                         <a th:if="${session.logStatus =='N' || session.logStatus == null}" class="nav-link" href="#">회원가입</a>
-                        <span th:if="${session.logStatus =='Y' }"
-                              th:text="${session.userInfo.username}">회원이름</span>
+                        <a th:if="${session.logStatus =='Y' }"
+                              th:text="${session.userInfo.username}" th:href="@{javascript:void(0)}">회원이름</a>
                     </li>
                 </ul>
             </div>

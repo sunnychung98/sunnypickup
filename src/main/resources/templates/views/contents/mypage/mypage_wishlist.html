@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      data-layout-decorate="~{layout/main_layout}">
+<div class="content-wrapper" layout:fragment="content">
+    <link href="css/homes-mypage.css" th:href="@{/css/homes-mypage.css}" rel="stylesheet">
+    <div class="container">
+        <h3 id="mypage-title">마이페이지</h3>
+
+        <div class="row">
+            <div class="col-3" th:replace="views/contents/mypage :: mypageMenu"><br/>
+            </div><!-- mypage 프로필부분 끝 -->
+
+            <!-- 마이페이지 요약기능 -->
+            <div class="col-9"><br/>
+                <div class="card card border-light mb-3">
+
+                    <!-- 위시리스트 -->
+
+                    <div class="card card border-light mb-3" style="height:290px;">
+                        <div class="card-header">위시리스트</div>
+                        <div class="card-body"><!-- card-body 시작 -->
+                            <br/>
+                            <div class="row">
+                                <span>아직 관심있는 상품이 없습니다</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      data-layout-decorate="~{layout/main_layout}">
+<div class="content-wrapper" layout:fragment="content">
+    <link href="css/homes-mypage.css" th:href="@{/css/homes-mypage.css}" rel="stylesheet">
+    <div class="container">
+    <h3 id="mypage-title">마이페이지</h3>
+
+    <div class="row">
+        <div class="col-3" th:replace="views/contents/mypage :: mypageMenu"><br/>
+        </div><!-- mypage 프로필부분 끝 -->
+
+        <!-- 마이페이지 요약기능 -->
+        <div class="col-9"><br/>
+            <div class="card card border-light mb-3">
+                <div class="card-header">나의 쇼핑</div>
+                <div class="card-body"><!-- card-body 시작 -->
+
+                    <div class="col-lg-12 center-block" id="myShopping">
+                        <div><br/>입금대기
+                            <hr>
+                            0 건<br/><br/></div>
+                        <div><br/>결제완료
+                            <hr>
+                            0 건<br/><br/></div>
+                        <div><br/>배송중
+                            <hr>
+                            0 건<br/><br/></div>
+                        <div><br/>배송완료
+                            <hr>
+                            0 건<br/><br/></div>
+                        <div><br/>구매확정
+                            <hr>
+                            0 건<br/><br/></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</html>
