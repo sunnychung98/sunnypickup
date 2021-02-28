@@ -2,22 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       data-layout-decorate="~{layout/main_layout}">
 <div class="content-wrapper" layout:fragment="content">
-    <link href="css/homes-mypage.css" th:href="@{/css/homes-mypage.css}" rel="stylesheet">
-    <div class="container">
-        <h3 id="mypage-title">마이페이지</h3>
+   <link href="css/homes-mypage.css" th:href="@{/css/homes-mypage.css}" rel="stylesheet">
+   <div class="container">
+      <h3 id="mypage-title">마이페이지</h3>
 
-        <div class="row">
-            <div class="col-3" th:replace="views/contents/mypage/mypage :: mypageMenu"><br/>
-            </div><!-- mypage 프로필부분 끝 -->
+      <div class="row">
+         <div class="col-md-3" th:replace="views/contents/mypage/mypage_main :: mypageMenu"><br/>
+         </div><!-- mypage 프로필부분 끝 -->
 
-            <!-- 마이페이지 요약기능 -->
-            <div class="col-9">
-                12345
+         <!-- 마이페이지 요약기능 -->
+         <div class="col-md-9"><br/>
+            <div class="card-header">
+            회원정보수정
             </div>
+         </div>
+      </div>
 
-        </div><!--row-->
-
-
-    </div>
+   </div>
 </div>
 </html>

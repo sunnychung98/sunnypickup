@@ -13,7 +13,7 @@ public class MypageController {
     @GetMapping("/dashboard")
     public ModelAndView dashboard(@RequestParam(value="id", required=false) String userid){
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("views/contents/mypage/mypage");
+        mav.setViewName("views/contents/mypage/mypage_main");
 
         return mav;
     }
