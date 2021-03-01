@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-   /* @Override
+   @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new ProcessInterceptor())
                 .addPathPatterns("/*")
@@ -22,7 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/test")
                 .excludePathPatterns("/homeboard/*")
                 .excludePathPatterns("/mypage/*");
-    }*/
+    }
 
     @Bean
     public CharacterEncodingFilter characterEncodingFilter() {
