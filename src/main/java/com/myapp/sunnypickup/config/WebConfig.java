@@ -1,10 +1,13 @@
 package com.myapp.sunnypickup.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 /**
@@ -12,6 +15,12 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    @Value("/istatic/images/")
+    private String imgStatic;
+
+    @Value("${server.file.upload.folder}")
+    private String imgPath;
 
    @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -30,6 +39,15 @@ public class WebConfig implements WebMvcConfigurer {
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
         return characterEncodingFilter;
+    }
+
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler(imgStatic + "**").addResourceLocations("file:///" + imgPath)
+                .setCachePeriod(0)
+                .resourceChain(true)
+                .addResolver(new PathResourceResolver());
     }
 
     @Bean
