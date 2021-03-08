@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" data-layout-decorate="~{layout/main_layout}">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-<script src="static/ckeditor/ckeditor.js" th:src="@{/static/ckeditor/ckeditor.js}"></script>
+<script  th:src="@{/static/ckeditor/ckeditor.js}"></script>
 <script >
 
-    $(function() {
+    (function() {
+        console.log('dfdfdfdf');
         CKEDITOR.replace('content', {
             filebrowserUploadUrl:'/myapp/editor/imageUpload.do',
             height:500,
@@ -44,7 +45,7 @@
         });
         return true;
 
-    });
+    })();
 
 
 </script>

@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class HomeboardVO {
-    private int b_no;
+    private int bno;
     private String title;
     private String thumbnail;
     private String content;
