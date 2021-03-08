@@ -8,5 +8,6 @@ public class MemberVO {
     private String username;
     private String userpwd;
     private String regcode;
+    private String nickname;
     private int status;
 }

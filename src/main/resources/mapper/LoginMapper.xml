@@ -4,11 +4,13 @@
     <select id="loginCheck" resultType="com.myapp.sunnypickup.vo.MemberVO">
         select userid,
                username,
+               nickname,
                regcode,
                status
         from register
         where userid=#{userid}
             and userpwd=#{userpwd}
     </select>
-
 </mapper>
+
+

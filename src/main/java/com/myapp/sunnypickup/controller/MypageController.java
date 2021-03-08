@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class MypageController {
 
     @GetMapping("/dashboard")
-    public ModelAndView dashboard(@RequestParam(value="id", required=false) String userid){
+    public ModelAndView dashboard(@RequestParam(value="userid", required=false) String userid){
         ModelAndView mav = new ModelAndView();
         mav.setViewName("views/contents/mypage/mypage_main");
 

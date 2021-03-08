@@ -4,10 +4,7 @@ import com.myapp.sunnypickup.service.LoginService;
 import com.myapp.sunnypickup.vo.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -24,6 +21,23 @@ public class LoginController {
     @Autowired
     public void setLoginService(LoginService service){
         this.service=service;
+    }
+
+    @GetMapping("/signup")
+    public ModelAndView signup(){
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("views/contents/account/signup");
+        return mav;
+    }
+
+
+    @GetMapping("/logout")
+    public ModelAndView logout(HttpSession session){
+        ModelAndView mav = new ModelAndView();
+        session.invalidate();
+        mav.setViewName("redirect:/");
+
+        return mav;
     }
 
     @GetMapping("/login")

@@ -30,7 +30,7 @@
                     </li>
 
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">게시판</a>
+                        <a class="nav-link" href="#" th:href="@{/homeboard}">게시판</a>
                     </li>
 
                     <li class="nav-item active">
@@ -57,9 +57,10 @@
                         <a th:if="${session.logStatus =='Y'}" class= "nav-link" th:href="@{/account/logout}">로그아웃</a>
                     </li>
                     <li class="nav-item active">
-                        <a th:if="${session.logStatus =='N' || session.logStatus == null}" class="nav-link" href="#">회원가입</a>
+                        <a th:if="${session.logStatus =='N' || session.logStatus == null}" class="nav-link" th:href="@{/account/signup}">회원가입</a>
                         <a th:if="${session.logStatus =='Y' }"
-                              th:text="${session.userInfo.username}" th:href="@{javascript:void(0)}">회원이름</a>
+                              th:text="${session.userInfo.username}" href="javascript:void(0);">회원이름</a>
+
                     </li>
                 </ul>
             </div>

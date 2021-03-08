@@ -17,11 +17,11 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new ProcessInterceptor())
                 .addPathPatterns("/*")
+                .addPathPatterns("/mypage/*")
                 .excludePathPatterns("/")
                 .excludePathPatterns("/account/*")
-                .excludePathPatterns("/test")
-                .excludePathPatterns("/homeboard/*")
-                .excludePathPatterns("/mypage/*");
+                .excludePathPatterns("/qna/*")
+                .excludePathPatterns("/shop/*");
     }
 
     @Bean

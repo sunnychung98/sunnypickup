@@ -32,8 +32,8 @@ public class QnaController {
 
             mav.addObject("list", list);
             mav.addObject("size", list == null ?  0 : list.size());
-            mav.addObject("pageTitle", "테스트페이지");
-            mav.addObject("pageName", "test");
+            mav.addObject("pageTitle", "질문게시판");
+            mav.addObject("pageName", "qna");
         }catch (Exception e){
             e.printStackTrace();
         }

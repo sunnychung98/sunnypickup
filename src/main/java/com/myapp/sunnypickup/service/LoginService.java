@@ -20,4 +20,5 @@ public class LoginService {
     public MemberVO loginCheck(MemberVO vo) throws SQLException {
         return mapper.loginCheck(vo);
     }
+
 }

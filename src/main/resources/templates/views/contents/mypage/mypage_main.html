@@ -9,7 +9,7 @@
 
         <div class="row">
             <div class="col-md-3" th:fragment="mypageMenu"><br/>
-              <div style="text-align:center"> <span>닉네임</span> 님 안녕하세요.</div>
+              <div style="text-align:center"> <a th:text="${session.userInfo.nickname}">닉네임</a> </div>
 
                 <ul class="list-group">
                     <li class="list-group-item">

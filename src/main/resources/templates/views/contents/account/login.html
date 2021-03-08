@@ -19,13 +19,13 @@
         <div style="margin-top:150px;"></div>
         <div class="form-signin">
             <a href="#" th:href="@{/}"><img src="/img/sunny_logo.png" style="width:200px"></a><br/>
-            <h1 class="h3 mb-3 fw-normal">로그인하세요</h1>
-            <br/>
+            <h3 class="form-signin-title">로그인하세요</h3>
             <label for="userid" class="visually-hidden"></label>
             <input type="text" name="userid" id="userid" class="form-control" placeholder="아이디를 입력하세요" required autofocus>
             <label for="userpwd" class="visually-hidden"></label>
             <input type="password" name="userpwd" id="userpwd" class="form-control" placeholder="비밀번호를 입력하세요" required>
-            <button class="w-100 btn btn-lg btn-primary" type="button" onclick="goLogin();">로그인</button>
+            <button class="w-100 btn btn-lg btn-primary" type="button" onclick="goLogin();">로그인</button><br/>
+            <a th:href="@{/account/signup}">아직 회원이 아니신가요?</a>
             <p class="mt-5 mb-3 text-muted">&copy;2021</p>
         </div>
 </div>
@@ -47,9 +47,7 @@
             console.log(data);
             switch (data.resultCode) {
                 case 200:
-                    console.log('200으로 넘어왔나요?');
-                    console.log(data.resultCode);
-                    href.location="/";
+                    location.href="/";
                     break;
                 case 300:
                 case 301:
