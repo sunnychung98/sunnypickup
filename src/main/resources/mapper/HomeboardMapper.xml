@@ -13,4 +13,25 @@
         from homeboard
     </select>
 
+    <insert id="insertHomeBoard" parameterType="com.myapp.sunnypickup.vo"
+                                          useGeneratedKeys="true" keyProperty="bno">
+
+       INSERT INTO homeboard( title,
+               theme,
+               userid,
+               nickname,
+               hit,
+               scrap,
+               thumbnail,
+               hashtag,
+               ip,
+               writedate)
+               values (#{title}, #{theme}, #{userid},
+                       #{nickname}, #{hit}, #{scrap},
+                       #{thumbnail}, #{hashtag}, #{ip}, now())
+
+
+
+    </insert>
+
 </mapper>
