@@ -55,19 +55,17 @@
         <div class="text-center py-5 px-3">
             <h2>게시판</h2>
 
-            <form action="#" th:action="@{/homeboard/formOk}"  th:object="${vo}" id="homeboardForm" method="post">
+            <form action="#" th:action="@{/homeboard/formOk}"   id="homeboardForm" method="post">
                 <hr/>
                 <div class="form-group">
-                    <input type="hidden" th:field="*{userid}" th:value="${session.userInfo.userid}">
-                    <input type="hidden" th:field="*{nickname}" th:value="${session.userInfo.nickname}">
-                    <input type="hidden" th:field="*{thumbnail}" value="123">
+                    <input type="hidden" name="thumbnail" value="123">
 
-                    <input id="title" type="text" th:field="*{title}" class="form-control"  placeholder="제목을 입력하세요"  maxlength="100"/>
+                    <input id="title" type="text" name = "title" class="form-control"  placeholder="제목을 입력하세요"  maxlength="100"/>
                     <br/>
-                    <textarea id="content" th:field="*{content}" name="content" class="form-control rounded-0" placeholder="글을 입력하세요">
+                    <textarea id="content"  name="content" class="form-control rounded-0" placeholder="글을 입력하세요">
 			        </textarea>
                     <br/>
-                    <input id="hashtag" type="text" th:field="*{hashtag}" class="form-control" placeholder="해시태그를 입력하세요"/><br/>
+                    <input id="hashtag" type="text"   name="hashtag" class="form-control" placeholder="해시태그를 입력하세요"/><br/>
                     <br/>
                     <br/>
 

@@ -5,6 +5,7 @@ import com.myapp.sunnypickup.vo.HomeboardVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,10 @@ public class HomeboardService {
         this.mapper=homeboardMapper;
     }
 
+
+    public  int getTotalBoardCount(Map<String, Object> param) throws SQLException {
+        return mapper.getTotalBoardCount(param);
+    }
     public List<HomeboardVO> getBoardList(Map<String,Object> param) throws Exception{
         return mapper.getBoardList(param);
     }

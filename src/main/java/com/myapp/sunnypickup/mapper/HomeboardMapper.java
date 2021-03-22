@@ -12,6 +12,9 @@ import java.util.Map;
 @Repository
 @Mapper
 public interface HomeboardMapper {
+
+    //리스트 전체카운트
+    int getTotalBoardCount(Map<String, Object> param) throws SQLException;
     //리스트
     List<HomeboardVO> getBoardList(Map<String, Object> param) throws SQLException;
     //입력

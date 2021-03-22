@@ -1,5 +1,6 @@
 package com.myapp.sunnypickup.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +18,9 @@ import java.util.UUID;
 
 @Controller
 public class CkeditorFileUploadController {
+
+    @Value("${server.file.upload.folder}")
+    private String imageServerUrl;
 
     SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
     Date today = new Date();
@@ -44,8 +48,8 @@ public class CkeditorFileUploadController {
             String fileName = upload.getOriginalFilename();
             byte[] bytes = upload.getBytes();
 
-            //이미지 경로 생성						집들이이미지 파일 경로 + 저장되는날 날짜
-            String path = "E:/SpringBootProject/files/"+dateForFile+"\\";
+            //이미지 경로 생성 집들이이미지 파일 경로 + 저장되는날 날짜
+            String path = imageServerUrl  + dateForFile +  File.separator;
             String ckUploadPath = path + uid + "_" + fileName;
 
             System.out.println(path);

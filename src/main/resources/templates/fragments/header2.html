@@ -59,7 +59,7 @@
                     <li class="nav-item active">
                         <a th:if="${session.logStatus =='N' || session.logStatus == null}" class="nav-link" th:href="@{/account/signup}">회원가입</a>
                         <a th:if="${session.logStatus =='Y' }"
-                              th:text="${session.userInfo.username}" href="javascript:void(0);">회원이름</a>
+                              th:text="${session.userInfo == null ? '' : session.userInfo.username}" href="javascript:void(0);">회원이름</a>
 
                     </li>
                 </ul>

@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" data-layout-decorate="~{layout/main_layout}">
 <div class="content-wrapper" layout:fragment="content">
+
+
+
     <main class="container">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/all.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}" />
+
         <!-- Custom styles for this template -->
 
         <div class="text-center py-5 px-3">
@@ -22,7 +28,8 @@
                     <tbody>
                     <tr th:each="board : ${list}">
                         <td th:text="${board.bno}"></td>
-                        <td><a th:text="${board.title}" href="@{/homeboard/view(bno=${board.bno})"></a></td>
+
+                        <td><a th:text="${board.title}" th:href="@{/homeboard/view(bno=${board.bno})}"></a></td>
                         <td th:text="${board.userid}"></td>
                         <td th:text="${board.writedate}"></td>
                         <td th:text="${board.hit}"></td>
@@ -31,6 +38,10 @@
                     </tr>
                     </tbody>
                 </table>
+                <input type="hidden" id="nowPage" name="nowPage" th:value="${currentPage}">
+            </div>
+            <div class="paging_wrap">
+                <div class="paging" th:utext="${paging}"></div>
             </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <a type="button" class="btn btn-primary" th:href="@{/homeboard/form}">글쓰기</a>
@@ -38,6 +49,15 @@
 
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+        <script>
+
+
+            function goPage(currentPage) {
+                location.href = '/homboard/list?currentPage='+ currentPage;
+            }
+
+
+        </script>
 
     </main><!-- /.container -->
 
