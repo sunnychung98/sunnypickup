@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 
 
 @Configuration
-@MapperScan(basePackages = {"kr.code.homes.mapper"}, sqlSessionFactoryRef = AgentConfig.TRANSACTION_SESSION_FACTORY_MAIN)
+@MapperScan(basePackages = {"com.myapp.sunnypickup.mapper"}, sqlSessionFactoryRef = AgentConfig.TRANSACTION_SESSION_FACTORY_MAIN)
 public class AgentDataSourceConfig {
 
     @Autowired

@@ -15,6 +15,6 @@ public class HomeboardVO {
     private int hit;
     private int scrap;
     private String writedate;
-    private int ip;
+    private String ip;
 
 }

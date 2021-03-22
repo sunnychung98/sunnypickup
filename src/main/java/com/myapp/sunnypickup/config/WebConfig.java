@@ -1,6 +1,5 @@
 package com.myapp.sunnypickup.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -16,13 +15,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("/istatic/images/")
-    private String imgStatic;
-
-    @Value("${server.file.upload.folder}")
-    private String imgPath;
-
-   @Override
+    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new ProcessInterceptor())
                 .addPathPatterns("/*")
@@ -41,19 +34,18 @@ public class WebConfig implements WebMvcConfigurer {
         return characterEncodingFilter;
     }
 
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(imgStatic + "**").addResourceLocations("file:///" + imgPath)
+
+        registry.addResourceHandler("/uploadImg/**").addResourceLocations("file:///E:/SpringBootProject/files/")
                 .setCachePeriod(0)
                 .resourceChain(true)
                 .addResolver(new PathResourceResolver());
     }
-
     @Bean
     MappingJackson2JsonView jsonView(){
-		//jsonView
-		return new MappingJackson2JsonView();
-	}
-    
+        //jsonView
+        return new MappingJackson2JsonView();
+    }
+
 }

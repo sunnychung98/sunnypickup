@@ -13,25 +13,50 @@
         from homeboard
     </select>
 
-    <insert id="insertHomeBoard" parameterType="com.myapp.sunnypickup.vo"
-                                          useGeneratedKeys="true" keyProperty="bno">
+    <insert id="insertHomeboard" parameterType="com.myapp.sunnypickup.vo.HomeboardVO"
+            useGeneratedKeys="true" keyProperty="bno">
 
-       INSERT INTO homeboard( title,
-               theme,
-               userid,
-               nickname,
-               hit,
-               scrap,
-               thumbnail,
-               hashtag,
-               ip,
-               writedate)
-               values (#{title}, #{theme}, #{userid},
-                       #{nickname}, #{hit}, #{scrap},
-                       #{thumbnail}, #{hashtag}, #{ip}, now())
-
-
+        INSERT INTO homeboard( title,
+                              content,
+                               theme,
+                               userid,
+                               nickname,
+                               hit,
+                               scrap,
+                               thumbnail,
+                               hashtag,
+                               ip,
+                               writedate)
+        values (#{title}, #{content}, #{theme}, #{userid},
+                #{nickname}, 0, 0,
+                #{thumbnail}, #{hashtag}, #{ip}, now())
 
     </insert>
+
+    <!-- 집들이 글내용보기 -->
+    <select id="homeboardSelect" parameterType="int" resultType="com.myapp.sunnypickup.vo.HomeboardVO">
+        select b_no as bno,
+               userid,
+               title,
+               content,
+               nickname,
+               hashtag,
+               hit,
+               scrap,
+               DATE_FORMAT(writedate, '%Y-%m-%d') writedate
+        from homeboard
+        where b_no=#{param1}
+    </select>
+
+    <!-- 집들이 글 수정하기 -->
+    <update id="homeboardEdit" parameterType="com.myapp.sunnypickup.vo.HomeboardVO">
+        update homeboard set theme=#{theme}, title=#{title}, content=#{content}, thumbnail=#{thumbnail}, hashtag=#{hashtag} where b_no=#{b_no}
+    </update>
+
+    <!-- 집들이 글 삭제하기 -->
+    <delete id="homeboardDelete" parameterType="int">
+        delete from homeboard where b_no=#{param1}
+    </delete>
+
 
 </mapper>

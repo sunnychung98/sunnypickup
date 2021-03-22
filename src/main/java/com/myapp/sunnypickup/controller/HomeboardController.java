@@ -4,16 +4,18 @@ import com.myapp.sunnypickup.service.HomeboardService;
 import com.myapp.sunnypickup.vo.HomeboardVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/homeboard")
 public class HomeboardController {
 
     private HomeboardService service;
@@ -21,7 +23,7 @@ public class HomeboardController {
     @Autowired
     public void setHomeboardService(HomeboardService service){ this.service=service;}
 
-    @RequestMapping("/homeboard")
+    @GetMapping("/list")
     public ModelAndView homeboard(@RequestParam(value="id", required=false)String userid){
         ModelAndView mav = new ModelAndView();
         try{
@@ -39,11 +41,49 @@ public class HomeboardController {
         return mav;
     }
 
-    @RequestMapping("/homeboardWrite")
-    public ModelAndView homeboardForm(@RequestParam(value="id", required = false)String userid){
+    @GetMapping("/form")
+    public ModelAndView homeboardForm(Model model){
+      ModelAndView mav = new ModelAndView();
+      model.addAttribute("vo", new HomeboardVO());
+      mav.setViewName("views/contents/homeboard/homeboardForm");
+      return mav;
+
+    }
+
+    @PostMapping("/formOk")
+    public ModelAndView homeboardFormOk (@ModelAttribute HomeboardVO vo, HttpServletRequest request, HttpSession session){
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("views/contents/homeboard/homeboardForm");
+
+        try{
+            int result = service.insertHomeboard(vo);
+
+            if(result>0){
+                mav.setViewName("redirect:/homeboard/list");
+            }else{
+                mav.setViewName("views/contents/homeboard/result");
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
         return mav;
+    }
+
+    @GetMapping("/view")
+    public ModelAndView homeboardView(@RequestParam(required = false) int bno){
+        ModelAndView mav = new ModelAndView();
+
+        try {
+            List<HomeboardVO> list = service.homeboardSelect(bno);
+            mav.addObject("list", list);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        mav.setViewName("views/contents/homeboard/homeboardView");
+        return mav;
+
     }
 
 }

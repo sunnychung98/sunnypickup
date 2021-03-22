@@ -21,4 +21,20 @@ public class HomeboardService {
     public List<HomeboardVO> getBoardList(Map<String,Object> param) throws Exception{
         return mapper.getBoardList(param);
     }
+
+    public int insertHomeboard(HomeboardVO vo) throws Exception{
+        return mapper.insertHomeboard(vo);
+    }
+
+    public List<HomeboardVO> homeboardSelect(int param) throws Exception{
+        return mapper.homeboardSelect(param);
+    }
+
+    public List<HomeboardVO> homeboardEdit(HomeboardVO vo) throws Exception{
+        return mapper.homeboardEdit(vo);
+    }
+
+    public int homeboardDelete(int param) throws Exception{
+        return mapper.homeboardDelete(param);
+    }
 }

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" data-layout-decorate="~{layout/main_layout}">
+<div class="content-wrapper" layout:fragment="content">
+    <main class="container">
+        <!-- Custom styles for this template -->
+
+        <div class="text-center py-5 px-3">
+            <h2>게시판</h2>
+
+            <div th:each="board : ${list}">
+                <h3 th:text="${board.title}"></h3>
+                <div th:text="${board.content}"></div>
+
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a th:href="@{/homeboard/form}">수정</a>
+                <a th:href="@{/homeboard/form}">삭제</a>
+            </div>
+
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+    </main><!-- /.container -->
+
+</div>
+</html>

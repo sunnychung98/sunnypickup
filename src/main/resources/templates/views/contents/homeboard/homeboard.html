@@ -22,7 +22,7 @@
                     <tbody>
                     <tr th:each="board : ${list}">
                         <td th:text="${board.bno}"></td>
-                        <td th:text="${board.title}"></td>
+                        <td><a th:text="${board.title}" href="@{/homeboard/view(bno=${board.bno})"></a></td>
                         <td th:text="${board.userid}"></td>
                         <td th:text="${board.writedate}"></td>
                         <td th:text="${board.hit}"></td>
@@ -33,7 +33,7 @@
                 </table>
             </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <a type="button" class="btn btn-primary" th:href="@{/homeboardWrite}">글쓰기</a>
+            <a type="button" class="btn btn-primary" th:href="@{/homeboard/form}">글쓰기</a>
             </div>
 
         </div>
