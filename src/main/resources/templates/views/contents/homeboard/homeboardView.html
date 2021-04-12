@@ -1,20 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" data-layout-decorate="~{layout/main_layout}">
 <div class="content-wrapper" layout:fragment="content">
+    <script th:inline="javascript">
+
+        function homeboardDelCheck(bno) {
+            if (confirm('정말로 삭제하시겠습니까?')) {
+                location.href = "/homeboard/del?bno="+bno;
+            }
+        }
+    </script>
+
     <main class="container">
         <!-- Custom styles for this template -->
 
-        <div class="text-center py-5 px-3">
+        <div th:each="board : ${list}" class="text-center py-5 px-3">
             <h2>게시판</h2>
 
-            <div th:each="board : ${list}">
+            <div>
                 <h3 th:text="${board.title}"></h3>
-                <div th:text="${board.content}"></div>
+                글번호 : <span th:text="${board.bno}"></span>
+                작성자: <span th:text="${board.nickname}"></span>
+                작성일: <span th:text="${board.writedate}"></span>
+                <hr>
+                <div th:utext="${board.content}"></div>
+                <hr>
+                해시태그<br/>
+                <div th:text="${board.hashtag}"></div>
+
+                썸네일이미지
+                <img th:src="@{'/uploadImg/thumbnail/'+${board.thumbnail}}">
+
 
             </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <a th:href="@{/homeboard/form}">수정</a>
-                <a th:href="@{/homeboard/form}">삭제</a>
+                <a class="btn btn-primary" th:if="${session.userInfo.userid == board.userid && board.userid != null}" th:href="@{'/homeboard/edit?bno='+${board.bno}}">수정</a>
+                &nbsp; <button class="btn btn-primary" th:if="${session.userInfo.userid == board.userid && board.userid != null}" th:onclick="'javascript:homeboardDelCheck(\''+${board.bno}+'\')'" >삭제</button>
             </div>
 
         </div>

@@ -3,34 +3,107 @@
 <!-- Custom styles for this template -->
 <head>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
-    <link href="css/signup.css" th:href="@{/css/signup.css}" rel="stylesheet">
+    <link href="#" th:href="@{/css/signup.css}" rel="stylesheet">
     <!--<title th:text="${pageTitle}"></title>-->
 
     <!--Bootstrap JS-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="js/bootstrap.js" th:src="@{/js/bootstrap.js}"></script>
+    <script th:src="@{/js/bootstrap.js}"></script>
     <script type="text/javascript">
 
-       function passwordCheckFunction(){
-           var userPwd1 = $('#userPwd1').val();
-           var userPwd2 = $('#userPwd2').val();
-           if(userPwd1 != userPwd2 ){
-               $('#passwordCheckMessage').html('비밀번호가 일치하지 않습니다');
-           }else{
-               $('#passwordCheckMessage').html('');
-           }
-       }
+        //
+        $(function(){
 
-       $(function(){
-           $('#signupBtn').click(function(){
-               var userPwd1 = $('#userPwd1').val();
-               var userPwd2 = $('#userPwd2').val();
-               if(userPwd1 != userPwd2){
-                   alert("비밀번호가 일치하지않습니다.");
-                   return false;
-               }
-           });
-       });
+            $("#signupForm").submit(function() {
+
+                //아이디 검사
+                if ($("#userid").val() === "") {
+                    alert("아이디는 필수입력사항입니다.");
+                    return false;
+                }
+
+
+
+                if ($("#idCheck").val() === "N") {
+                    alert("아이디 중복검사를 해주세요.");
+                    return false;
+                }
+
+                //비밀번호 검사
+                if($("#userPwd1").val()==null || $("#userPwd2").val()==null){
+                    alert("비밀번호는 필수입력사항입니다.");
+                    return false;
+                }
+                if($("#userPwd1").val()!== $("#userPwd2").val()){
+                    alert("비밀번호가 일치하지 않습니다.");
+                    return false;
+                }
+
+
+            });
+
+        });
+
+
+        //아이디중복검사
+        $(function(){
+            //1. ID관리
+            $("#dupFilter").click(function(){
+                let url = "http://localhost:8082/dupFilter";
+                let data = "userid="+document.getElementById("userid").value;
+
+                console.log("data="+data);
+                //아이디 정규식 설정(영문 숫자조합 최소5~13글자)
+                let idPattern =  /^[A-Za-z0-9]{5,13}$/;
+                //정규식 결과 저장
+                let pattResult = idPattern.test($("#userid").val());
+
+
+                if($("#userid").val()=== ""){
+                    alert("아이디를 입력해주세요.");
+                }else if(pattResult !== true){
+                    alert("아이디는 영문 숫자 조합 5~13자로 입력해주세요.");
+
+                }else{
+
+                    $.ajax({
+                        url:url,
+                        data:data,
+                        success:function(result){
+                            if(result === "") {
+
+                                $("#idCheckResultMsg").css("display","block");
+                                $("#idCheckResultMsg").css("color","blue");
+                                $("#idCheckResultMsg").html($("#userid").val()+"는 사용가능한 아이디 입니다.");
+
+                            }else{
+                                $("#idCheckResultMsg").css("display","block");
+                                $("#idCheckResultMsg").css("color","red");
+                                $("#idCheckResultMsg").html($("#userid").val()+"는 이미 사용중인 아이디입니다");
+
+                            }
+                            $("#idCheck").val("Y");
+
+                        },error:function(error){
+                            console.log("아이디중복검사에서 에러 발생", error);
+                        }
+                    });
+                }
+            });
+
+        });
+
+        //2. 비밀번호
+        function passwordCheckFunction(){
+            let userPwd1 = $('#userPwd1').val();
+            let userPwd2 = $('#userPwd2').val();
+            if(userPwd1 !== userPwd2 ){
+                $('#passwordCheckMessage').html('비밀번호가 일치하지 않습니다');
+            }else{
+                $('#passwordCheckMessage').html('');
+            }
+        }
+
 
 
     </script>
@@ -42,28 +115,31 @@
 <body>
 <div class="text-center">
     <div style="margin-top:150px;"></div>
-    <a href="#" th:href="@{/}"><img src="/img/sunny_logo.png" style="width:200px"></a><br/>
+    <a href="#" th:href="@{/}"><img th:src="@{/img/sunny_logo.png}" style="width:200px"></a><br/>
     <h3 class="form-signup-title">회원가입</h3>
-    <div class="form-signup">
+    <div>
+    <form method="post" id="signupForm" action="#" th:action="@{/account/signupOk}"  class="form-signup"  enctype="multipart/form-data" >
 
-        <div class="form-row">
-            <label for="userid" style="padding-right:10px;">*아이디</label>
-            <button type="button" id=dupFilter class="input-group-text">중복검사</button>
+
+        <label for="userid" style="padding-right:10px;">*아이디</label>
             <input type="text" name="userid" id="userid" placeholder="영문,숫자조합 6~13글자" class="form-control"/>
+            <input type="hidden" id="idCheck" value="N">
+            <button type="button" id=dupFilter class="input-group-text">중복검사</button>
+            <div id="idCheckResultMsg"> </div>
 
-        </div>
+        <br/>
         <label for="userPwd1">*비밀번호</label>
-        <input type="password" name="userpwd" id="userPwd1" class="form-control" onkeyup="passwordCheckFunction();" placeholder="영문,숫자,특수문자조합 6~15글자"/>
+            <input type="password" name="userpwd" id="userPwd1" class="form-control" onkeyup="passwordCheckFunction();" placeholder="영문,숫자,특수문자조합 6~15글자"/>
 
         <label for="userPwd2">*비밀번호 확인</label>
-        <input type="password" id="userPwd2" class="form-control" onkeyup="passwordCheckFunction();" placeholder="비밀번호 확인"/>
-        <span style="color:red;size:10px;" id="passwordCheckMessage"></span><br/>
+            <input type="password" id="userPwd2" class="form-control" onkeyup="passwordCheckFunction();" placeholder="비밀번호 확인"/>
+            <span style="color:red;size:10px;" id="passwordCheckMessage"></span><br/>
 
         <label for="username">*이름</label>
-        <input type="text" name="username" id="username" placeholder="본명으로 입력해주세요" class="form-control"/>
+            <input type="text" name="username" id="username" placeholder="본명으로 입력해주세요" class="form-control"/>
 
-        <label for="nickname">닉네임</label>
-        <input type="text" name="nickname" id="nickname" placeholder="특수문자 제외 3~10자" class="form-control"/>
+        <label for="nickname">*닉네임</label>
+         <input type="text" name="nickname" id="nickname" placeholder="특수문자 제외 3~10자" class="form-control"/>
 
 
         <label for="m_pic">프로필사진</label>
@@ -79,14 +155,15 @@
         <br/>
 
 
-        <input id="signupBtn" class="btn btn-lg btn-primary btn-block" type="button" value="회원가입"/>
+        <input type="submit" id="signupBtn" class="btn btn-lg btn-primary btn-block" value="회원가입"/>
 
         </form>
+        </div>
+    <a href="#" th:href="@{/account/login}">이미 가입하셨나요?</a>
+    <br/>
+    <a href="#" th:href="@{/}"> 홈으로</a>
+</div>
 
-    </div>
-    <a href="#" th:href="@{/account/login}">이미 가입하셨나요?</a><br/><a href="#" th:href="@{/}"> 홈으로</a>
-</div>
-</div>
 </body>
 
 </html>

@@ -11,6 +11,29 @@
         where userid=#{userid}
             and userpwd=#{userpwd}
     </select>
+
+    <select id="dupFilter" resultType="String">
+        select userid
+        from register
+        where userid=#{userid}
+    </select>
+
+
+    <!-- 회원정보 입력 -->
+    <insert id="addMember" parameterType="com.myapp.sunnypickup.vo.MemberVO">
+        insert into register(
+                    userid,
+                    userpwd,
+                    username,
+                    nickname,
+                    tel,
+                    email,
+                    point,
+                    regcode,
+                    status,
+                    regdate)
+            values(#{userid},#{userpwd},#{username},#{nickname},#{tel},#{email},'0','0', '0', now())
+    </insert>
 </mapper>
 
 

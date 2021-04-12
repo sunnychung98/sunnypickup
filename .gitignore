@@ -34,3 +34,6 @@ out/
 .vscode/
 *.log
 /logs/
+
+### my ignore ###
+src/main/resources/application.yml

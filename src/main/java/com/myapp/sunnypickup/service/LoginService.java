@@ -21,4 +21,12 @@ public class LoginService {
         return mapper.loginCheck(vo);
     }
 
+    public String dupFilter(String userid) throws SQLException{
+        return mapper.dupFilter(userid);
+    }
+
+    public int addMember(MemberVO vo) throws SQLException{
+        return mapper.addMember(vo);
+    }
+
 }

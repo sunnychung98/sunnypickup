@@ -31,6 +31,39 @@ public class LoginController {
     }
 
 
+    @RequestMapping(value="signupOk", method=RequestMethod.POST)
+    public ModelAndView signupOk(MemberVO vo){
+        ModelAndView mav = new ModelAndView();
+        try {
+            int result = service.addMember(vo);
+            if(result>0){
+                mav.setViewName("views/contents/account/result2");
+
+            }else{
+                mav.setViewName("views/contents/account/result");
+
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+
+
+        return mav;
+    }
+
+    @RequestMapping(value="/dupFilter")
+    @ResponseBody
+    public String dupFilter(@RequestParam(value="userid") String userid) throws SQLException {
+
+        String result = service.dupFilter(userid);
+        System.out.println(result);
+
+        return result;
+    }
+
+
+
     @GetMapping("/logout")
     public ModelAndView logout(HttpSession session){
         ModelAndView mav = new ModelAndView();
@@ -39,6 +72,10 @@ public class LoginController {
 
         return mav;
     }
+
+
+
+
 
     @GetMapping("/login")
     public ModelAndView login(HttpSession session){

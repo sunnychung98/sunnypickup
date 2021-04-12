@@ -35,11 +35,15 @@ public class HomeboardService {
         return mapper.homeboardSelect(param);
     }
 
-    public List<HomeboardVO> homeboardEdit(HomeboardVO vo) throws Exception{
+    public int homeboardEdit(HomeboardVO vo) throws Exception{
         return mapper.homeboardEdit(vo);
     }
 
     public int homeboardDelete(int param) throws Exception{
         return mapper.homeboardDelete(param);
+    }
+
+    public List<HomeboardVO> getBoardListForMain(Map<String, Object> param) throws Exception{
+        return mapper.getBoardListForMain(param);
     }
 }

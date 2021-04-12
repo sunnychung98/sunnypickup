@@ -23,6 +23,16 @@
         LIMIT ${startRow}, ${pageInitPerPage}
     </select>
 
+    <select id="getBoardListForMain" parameterType="java.util.Map" resultType="com.myapp.sunnypickup.vo.HomeboardVO">
+        select b_no as bno,
+               title,
+               nickname,
+               thumbnail,
+               DATE_FORMAT(writedate, '%Y-%m-%d') writedate
+        from homeboard
+        order by b_no desc LIMIT 4
+    </select>
+
     <insert id="insertHomeboard" parameterType="com.myapp.sunnypickup.vo.HomeboardVO"
             useGeneratedKeys="true" keyProperty="bno">
 
@@ -53,6 +63,7 @@
                hashtag,
                hit,
                scrap,
+               thumbnail,
                DATE_FORMAT(writedate, '%Y-%m-%d') writedate
         from homeboard
         where b_no=#{param1}
@@ -60,7 +71,13 @@
 
     <!-- 집들이 글 수정하기 -->
     <update id="homeboardEdit" parameterType="com.myapp.sunnypickup.vo.HomeboardVO">
-        update homeboard set theme=#{theme}, title=#{title}, content=#{content}, thumbnail=#{thumbnail}, hashtag=#{hashtag} where b_no=#{b_no}
+        update homeboard
+        set theme=#{theme},
+            title=#{title},
+            content=#{content},
+            thumbnail=#{thumbnail},
+            hashtag=#{hashtag}
+            where b_no = #{bno}
     </update>
 
     <!-- 집들이 글 삭제하기 -->
