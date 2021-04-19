@@ -30,8 +30,14 @@ public class LoginController {
         this.service=service;
     }
 
-    @Autowired
+
+
     private JavaMailSender javaMailSender;
+
+    @Autowired
+    public void setJavaMailSender(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
 
     @GetMapping("/signup")
     public ModelAndView signup(){
@@ -59,7 +65,16 @@ public class LoginController {
             vo.setProfile(newProfileName);
 
             try{
-                mf.transferTo(new File(path+"/"+newProfileName));
+
+                File f = new File(path+newProfileName);
+
+                if(!f.exists()) {
+                    if(f.getParentFile().mkdirs()) {
+                        f.createNewFile();
+                    }
+                }
+
+                mf.transferTo(f);
                 System.out.println("==파일업로드=="+email);
             }catch (Exception e) {
                 e.getStackTrace();
@@ -76,7 +91,7 @@ public class LoginController {
                     + "  		"+userid+"님, 안녕하세요.<br/>\r\n"
                     + "  		가입을 진심으로 환영합니다!!<br/>\r\n"
                     + "		아래 링크를 누르시면 회원가입이 완료되며 로그인 페이지로 이동합니다.<br/>\r\n"
-                    + "		<a href=\"http://localhost:8082/myapp/account/statusChange?userid="+userid+"\"><u>회원가입 완료 링크</u></a><br/><br/>\r\n"
+                    + "		<a href=\"http://localhost:8082/myapp/accostatusChange?userid="+userid+"\"><u>회원가입 완료 링크</u></a><br/><br/>\r\n"
                     + "  		회원가입 중 불편하셨던 점은 메일 부탁드립니다!\r\n\n<br/>"
                     + "		감사합니다."
                     + "</div>"

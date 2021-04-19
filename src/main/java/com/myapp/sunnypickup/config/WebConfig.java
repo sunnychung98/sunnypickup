@@ -3,6 +3,7 @@ package com.myapp.sunnypickup.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -56,5 +57,15 @@ public class WebConfig implements WebMvcConfigurer {
         //jsonView
         return new MappingJackson2JsonView();
     }
+
+
+    @Bean public JavaMailSenderImpl mailSender() {
+        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+        javaMailSender.setProtocol("smtp");
+        javaMailSender.setHost("127.0.0.1");
+        javaMailSender.setPort(25);
+        return javaMailSender;
+    }
+
 
 }
