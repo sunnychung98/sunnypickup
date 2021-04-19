@@ -26,14 +26,24 @@
                     userpwd,
                     username,
                     nickname,
+                    profile,
                     tel,
                     email,
                     point,
                     regcode,
                     status,
                     regdate)
-            values(#{userid},#{userpwd},#{username},#{nickname},#{tel},#{email},'0','0', '0', now())
+            values(#{userid},#{userpwd},#{username},#{nickname}, #{profile},#{tel},#{email},'0','0', '0', now())
     </insert>
+
+    <update id="statusChange" parameterType="com.myapp.sunnypickup.vo.MemberVO">
+        update register
+        set status='1'
+        where userid = #{userid}
+    </update>
+
 </mapper>
+
+
 
 

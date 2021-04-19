@@ -15,4 +15,5 @@ public interface LoginMapper {
 
     String dupFilter(String userid) throws SQLException;
     int addMember(MemberVO vo) throws SQLException;
+    int statusChange(MemberVO vo) throws SQLException;
 }

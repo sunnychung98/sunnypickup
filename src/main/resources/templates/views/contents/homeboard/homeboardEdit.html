@@ -55,11 +55,17 @@
             if (filetype == 'jpg' || filetype == 'gif' || filetype == 'png' || filetype == 'jpeg') {
                 //이미지파일만 선택하게
             } else {
-                alert('이미지파일 타입만 선택 가능합니다.');
+               // alert('이미지파일 타입만 선택 가능합니다.1111');
                 //이미지가 선택되지 않으면 파일 창 초기화
                 //document.getElementById("file").select();
                 // document.selection.clear();
+                var parentNode = obj.parentNode;
+                console.log(obj.cloneNode(true));
+                var node = parentNode.replaceChild(obj.cloneNode(true), obj);
+                $(obj).val('');
+
                 return false;
+
             }
         }
     </script>

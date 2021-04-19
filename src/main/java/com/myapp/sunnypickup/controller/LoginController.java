@@ -3,11 +3,18 @@ package com.myapp.sunnypickup.controller;
 import com.myapp.sunnypickup.service.LoginService;
 import com.myapp.sunnypickup.vo.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +30,9 @@ public class LoginController {
         this.service=service;
     }
 
+    @Autowired
+    private JavaMailSender javaMailSender;
+
     @GetMapping("/signup")
     public ModelAndView signup(){
         ModelAndView mav = new ModelAndView();
@@ -30,12 +40,69 @@ public class LoginController {
         return mav;
     }
 
+    @Value("E:/SpringBootProject/files/")
+    private String imageServerUrl;
 
-    @RequestMapping(value="signupOk", method=RequestMethod.POST)
-    public ModelAndView signupOk(MemberVO vo){
+    @PostMapping(value="/signupOk")
+    public ModelAndView signupOk(String userid, MemberVO vo,
+                                 @RequestParam(value="file") MultipartFile mf){
         ModelAndView mav = new ModelAndView();
+
         try {
+            vo.setUserid(userid);
+            String email = vo.getEmail();
+
+            // 파일 업로드
+            String path = imageServerUrl + "\\profilePhoto\\";
+            String originalFileName = mf.getOriginalFilename();
+            String newProfileName= "profile_"+originalFileName;
+            vo.setProfile(newProfileName);
+
+            try{
+                mf.transferTo(new File(path+"/"+newProfileName));
+                System.out.println("==파일업로드=="+email);
+            }catch (Exception e) {
+                e.getStackTrace();
+            }
+
+            //이메일보내기
+            String emailSubject = "[Sunny]회원가입을 환영합니다!!";
+            String content = "<!DOCTYPE html>\r\n" +
+                    "<html>\r\n" +
+                    "<head>"
+                    + "</head>"
+                    +"<body>"
+                    + "  		안녕하세요?<br/><br/>\r\n"
+                    + "  		"+userid+"님, 안녕하세요.<br/>\r\n"
+                    + "  		가입을 진심으로 환영합니다!!<br/>\r\n"
+                    + "		아래 링크를 누르시면 회원가입이 완료되며 로그인 페이지로 이동합니다.<br/>\r\n"
+                    + "		<a href=\"http://localhost:8082/myapp/account/statusChange?userid="+userid+"\"><u>회원가입 완료 링크</u></a><br/><br/>\r\n"
+                    + "  		회원가입 중 불편하셨던 점은 메일 부탁드립니다!\r\n\n<br/>"
+                    + "		감사합니다."
+                    + "</div>"
+                    +"</body>"
+                    +"</html>";
+
+            try {
+                System.out.println("==이메일발송=="+email);
+                MimeMessage message= javaMailSender.createMimeMessage();
+                MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+                messageHelper.setFrom("obokbosok.kr@gmail.com");
+                messageHelper.setTo(email);
+                messageHelper.setSubject(emailSubject);
+                messageHelper.setText("text/html;charset=UTF-8",content);
+                javaMailSender.send(message);
+
+
+            }catch(Exception e) {
+
+                System.out.println(e.getMessage());
+            }
+
+
+
             int result = service.addMember(vo);
+
             if(result>0){
                 mav.setViewName("views/contents/account/result2");
 
@@ -51,6 +118,25 @@ public class LoginController {
 
         return mav;
     }
+
+    //이메일인증
+
+    @RequestMapping("/statusChange")
+    public ModelAndView statusChange(MemberVO vo, String userid, HttpServletRequest req){
+        ModelAndView mav = new ModelAndView();
+        vo.setUserid(userid);
+        try {
+            int resultVO = service.statusChange(vo);
+
+            if(resultVO>0){
+                mav.setViewName("views/contents/account/login");
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return mav;
+    }
+
 
     @RequestMapping(value="/dupFilter")
     @ResponseBody

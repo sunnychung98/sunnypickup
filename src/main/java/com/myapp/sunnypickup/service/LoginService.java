@@ -2,6 +2,7 @@ package com.myapp.sunnypickup.service;
 
 import com.myapp.sunnypickup.vo.MemberVO;
 import com.myapp.sunnypickup.mapper.LoginMapper;
+import org.apache.ibatis.jdbc.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,10 @@ public class LoginService {
 
     public int addMember(MemberVO vo) throws SQLException{
         return mapper.addMember(vo);
+    }
+
+    public int statusChange(MemberVO vo) throws SQLException{
+        return mapper.statusChange(vo);
     }
 
 }

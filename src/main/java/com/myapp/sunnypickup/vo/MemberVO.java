@@ -14,5 +14,5 @@ public class MemberVO {
     private String regdate;
     private String email;
     private int point;
-
+    private String profile;
 }

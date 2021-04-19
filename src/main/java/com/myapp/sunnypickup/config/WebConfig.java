@@ -24,10 +24,14 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new ProcessInterceptor())
                 .addPathPatterns("/*")
                 .addPathPatterns("/mypage/*")
+                .addPathPatterns("/homeboard/formOk")
+                .addPathPatterns("/homeboard/edit")
+                .addPathPatterns("/homeboard/editOk")
                 .excludePathPatterns("/")
                 .excludePathPatterns("/account/*")
                 .excludePathPatterns("/qna/*")
-                .excludePathPatterns("/shop/*");
+                .excludePathPatterns("/shop/*")
+                .excludePathPatterns("/homeboard/view");
     }
 
     @Bean
