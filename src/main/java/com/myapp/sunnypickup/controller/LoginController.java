@@ -1,9 +1,14 @@
 package com.myapp.sunnypickup.controller;
 
 import com.myapp.sunnypickup.service.LoginService;
+import com.myapp.sunnypickup.service.SendEmailService;
 import com.myapp.sunnypickup.vo.MemberVO;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -31,13 +36,10 @@ public class LoginController {
     }
 
 
-
-    private JavaMailSender javaMailSender;
-
-    @Autowired
-    public void setJavaMailSender(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
-    }
+//    @Autowired
+//    public void setJavaMailSender(JavaMailSender javaMailSender) {
+//        this.javaMailSender = javaMailSender;
+//    }
 
     @GetMapping("/signup")
     public ModelAndView signup(){
@@ -49,76 +51,57 @@ public class LoginController {
     @Value("E:/SpringBootProject/files/")
     private String imageServerUrl;
 
+    @Autowired
+    private SendEmailService sendEmailService;
+
     @PostMapping(value="/signupOk")
-    public ModelAndView signupOk(String userid, MemberVO vo,
+    public ModelAndView signupOk(MemberVO vo,
                                  @RequestParam(value="file") MultipartFile mf){
         ModelAndView mav = new ModelAndView();
+        String userid = vo.getUserid();
+        String email = vo.getEmail();
 
-        try {
-            vo.setUserid(userid);
-            String email = vo.getEmail();
+        System.out.println("유저아이디"+userid);
+        System.out.println("이메일주소"+email);
 
-            // 파일 업로드
-            String path = imageServerUrl + "\\profilePhoto\\";
-            String originalFileName = mf.getOriginalFilename();
-            String newProfileName= "profile_"+originalFileName;
-            vo.setProfile(newProfileName);
-
-            try{
-
-                File f = new File(path+newProfileName);
-
-                if(!f.exists()) {
-                    if(f.getParentFile().mkdirs()) {
-                        f.createNewFile();
-                    }
-                }
-
-                mf.transferTo(f);
-                System.out.println("==파일업로드=="+email);
-            }catch (Exception e) {
-                e.getStackTrace();
-            }
-
-            //이메일보내기
-            String emailSubject = "[Sunny]회원가입을 환영합니다!!";
-            String content = "<!DOCTYPE html>\r\n" +
-                    "<html>\r\n" +
-                    "<head>"
-                    + "</head>"
-                    +"<body>"
-                    + "  		안녕하세요?<br/><br/>\r\n"
-                    + "  		"+userid+"님, 안녕하세요.<br/>\r\n"
-                    + "  		가입을 진심으로 환영합니다!!<br/>\r\n"
-                    + "		아래 링크를 누르시면 회원가입이 완료되며 로그인 페이지로 이동합니다.<br/>\r\n"
-                    + "		<a href=\"http://localhost:8082/myapp/accostatusChange?userid="+userid+"\"><u>회원가입 완료 링크</u></a><br/><br/>\r\n"
-                    + "  		회원가입 중 불편하셨던 점은 메일 부탁드립니다!\r\n\n<br/>"
-                    + "		감사합니다."
-                    + "</div>"
-                    +"</body>"
-                    +"</html>";
-
-            try {
-                System.out.println("==이메일발송=="+email);
-                MimeMessage message= javaMailSender.createMimeMessage();
-                MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
-                messageHelper.setFrom("obokbosok.kr@gmail.com");
-                messageHelper.setTo(email);
-                messageHelper.setSubject(emailSubject);
-                messageHelper.setText("text/html;charset=UTF-8",content);
-                javaMailSender.send(message);
-
-
-            }catch(Exception e) {
-
-                System.out.println(e.getMessage());
-            }
+        //random number 생성
+        String randomCode = RandomStringUtils.random(64);
+        vo.setRegcode(randomCode);
 
 
 
+        //이메일보내기
+        String emailSubject = "[Sunny]회원가입을 환영합니다!!";
+        String content = "email test";
+
+
+        //파일업로드
+        String path = imageServerUrl + "\\profilePhoto\\";
+        String originalFileName = mf.getOriginalFilename();
+        String newProfileName= "profile_"+originalFileName;
+        vo.setProfile(newProfileName);
+
+        File f = new File(path+newProfileName);
+
+
+        try{
             int result = service.addMember(vo);
 
             if(result>0){
+                sendEmailService.sendEmail(email, emailSubject, content);
+                try {
+                    if (!f.exists()) {
+                        if (f.getParentFile().mkdirs()) {
+                            f.createNewFile();
+                        }
+                    }
+                    mf.transferTo(f);
+                }catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                System.out.println("sent email....");
                 mav.setViewName("views/contents/account/result2");
 
             }else{
@@ -128,13 +111,10 @@ public class LoginController {
         }catch(Exception e){
             e.printStackTrace();
         }
-
-
-
         return mav;
     }
 
-    //이메일인증
+
 
     @RequestMapping("/statusChange")
     public ModelAndView statusChange(MemberVO vo, String userid, HttpServletRequest req){

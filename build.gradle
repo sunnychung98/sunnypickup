@@ -54,7 +54,7 @@ dependencies {
     compile ('org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16')
     //compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.4.RELEASE'
 
-
+    compile("org.springframework.boot:spring-boot-starter-mail")
 }
 
 test {
