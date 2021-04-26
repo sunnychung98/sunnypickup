@@ -33,7 +33,7 @@
                     regcode,
                     status,
                     regdate)
-            values(#{userid},#{userpwd},#{username},#{nickname}, #{profile},#{tel},#{email},'0','0', '0', now())
+            values(#{userid},#{userpwd},#{username},#{nickname},#{profile},#{tel},#{email},'0',#{regcode}, '0', now())
     </insert>
 
     <update id="statusChange" parameterType="com.myapp.sunnypickup.vo.MemberVO">

@@ -1,14 +1,10 @@
 package com.myapp.sunnypickup.controller;
 
 import com.myapp.sunnypickup.service.LoginService;
-import com.myapp.sunnypickup.service.SendEmailService;
 import com.myapp.sunnypickup.vo.MemberVO;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -16,10 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,12 +49,11 @@ public class LoginController {
     @Value("E:/SpringBootProject/files/")
     private String imageServerUrl;
 
-    @Autowired
-    private SendEmailService sendEmailService;
 
     @PostMapping(value="/signupOk")
     public ModelAndView signupOk(MemberVO vo,
-                                 @RequestParam(value="file") MultipartFile mf){
+                                 @RequestParam(value="file") MultipartFile mf,
+                                 HttpServletRequest request){
         ModelAndView mav = new ModelAndView();
         String userid = vo.getUserid();
         String email = vo.getEmail();
@@ -65,9 +62,9 @@ public class LoginController {
         System.out.println("이메일주소"+email);
 
         //random number 생성
-        String randomCode = RandomStringUtils.random(64);
+        String randomCode = RandomStringUtils.randomAlphanumeric(12);
+        System.out.println("랜덤코드:"+randomCode);
         vo.setRegcode(randomCode);
-
 
 
         //이메일보내기
@@ -82,13 +79,14 @@ public class LoginController {
         vo.setProfile(newProfileName);
 
         File f = new File(path+newProfileName);
-
+        String siteURL = request.getRequestURL().toString();
 
         try{
             int result = service.addMember(vo);
 
+
             if(result>0){
-                sendEmailService.sendEmail(email, emailSubject, content);
+                sendVerificationEmail(vo, siteURL);
                 try {
                     if (!f.exists()) {
                         if (f.getParentFile().mkdirs()) {
@@ -114,6 +112,30 @@ public class LoginController {
         return mav;
     }
 
+    @Autowired
+    private JavaMailSender mailSender;
+
+    public void sendVerificationEmail(MemberVO vo, String siteURL) throws UnsupportedEncodingException, MessagingException {
+        String subject="Pleaes verify your registration";
+        String senderName="Sunny Home";
+        String mailContent = "<p>Dear " + vo.getUserid() + ", </p>";
+        mailContent += "<p>Please click this to verify</p>";
+        String verifyURL = siteURL + "/statusChange?userid="+vo.getUserid();
+        mailContent += "<a = \"href="+ verifyURL + "\">VERIFY</a>";
+
+        mailContent += "<p>Thank you!</p>";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom("sunnychungkr@gmail.com", senderName);
+        helper.setTo(vo.getEmail());
+        helper.setSubject(subject);
+
+        helper.setText(mailContent, true);
+        mailSender.send(message);
+
+    }
 
 
     @RequestMapping("/statusChange")

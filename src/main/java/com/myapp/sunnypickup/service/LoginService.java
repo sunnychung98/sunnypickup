@@ -4,6 +4,7 @@ import com.myapp.sunnypickup.vo.MemberVO;
 import com.myapp.sunnypickup.mapper.LoginMapper;
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -12,6 +13,8 @@ import java.sql.SQLException;
 public class LoginService {
 
     private LoginMapper mapper;
+
+
 
     @Autowired
     public void setLoginMapper(LoginMapper loginMapper){

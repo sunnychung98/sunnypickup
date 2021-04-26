@@ -3,6 +3,7 @@ package com.myapp.sunnypickup.service;
 import com.myapp.sunnypickup.mapper.HomeboardMapper;
 import com.myapp.sunnypickup.vo.HomeboardVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -14,10 +15,15 @@ public class HomeboardService {
 
     private HomeboardMapper mapper;
 
+
+
+
     @Autowired
     public void setHomeboardMapper(HomeboardMapper homeboardMapper){
         this.mapper=homeboardMapper;
     }
+
+
 
 
     public  int getTotalBoardCount(Map<String, Object> param) throws SQLException {
