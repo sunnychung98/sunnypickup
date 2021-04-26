@@ -1,6 +1,7 @@
 package com.myapp.sunnypickup.controller;
 
 import com.myapp.sunnypickup.service.LoginService;
+import com.myapp.sunnypickup.service.SendEmailService;
 import com.myapp.sunnypickup.vo.MemberVO;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +34,48 @@ public class LoginController {
         this.service=service;
     }
 
+    @Autowired
+    private SendEmailService sendEmailService;
 
 //    @Autowired
 //    public void setJavaMailSender(JavaMailSender javaMailSender) {
 //        this.javaMailSender = javaMailSender;
 //    }
+
+
+    @RequestMapping(value="/mails")
+    @ResponseBody
+    public Map<String, Object> test(MemberVO vo){
+
+        Map<String, Object> result = new HashMap<String, Object>();
+
+        String userid = "admin";
+        String email = "eveing2@naver.com";
+
+        System.out.println("유저아이디"+userid);
+        System.out.println("이메일주소"+email);
+
+        //random number 생성
+        String randomCode = RandomStringUtils.random(64);
+        vo.setRegcode(randomCode);
+
+        //이메일보내기
+        String emailSubject = "[Sunny]회원가입을 환영합니다!!";
+        String content = "email test";
+
+
+        try{
+
+            sendEmailService.sendEmail(email, emailSubject, content);
+            System.out.println("sent email....");
+            result.put("result", 200);
+
+        }catch(Exception e){
+            e.printStackTrace();
+            result.put("result", 500);
+        }
+        return result;
+    }
 
     @GetMapping("/signup")
     public ModelAndView signup(){
