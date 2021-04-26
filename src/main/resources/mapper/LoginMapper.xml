@@ -3,13 +3,13 @@
 <mapper namespace="com.myapp.sunnypickup.mapper.LoginMapper">
     <select id="loginCheck" resultType="com.myapp.sunnypickup.vo.MemberVO">
         select userid,
+               userpwd,
                username,
                nickname,
                regcode,
                status
         from register
         where userid=#{userid}
-            and userpwd=#{userpwd}
     </select>
 
     <select id="dupFilter" resultType="String">

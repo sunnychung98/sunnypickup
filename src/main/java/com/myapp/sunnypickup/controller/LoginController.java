@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +29,14 @@ import java.util.Map;
 public class LoginController {
 
     private LoginService service;
+
+
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setBCryptPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Autowired
     public void setLoginService(LoginService service){
@@ -120,8 +129,9 @@ public class LoginController {
         String siteURL = request.getRequestURL().toString();
 
         try{
-            int result = service.addMember(vo);
+            vo.setUserpwd(passwordEncoder.encode(vo.getUserpwd()));
 
+            int result = service.addMember(vo);
 
             if(result>0){
                 sendVerificationEmail(vo, siteURL);
@@ -260,19 +270,27 @@ public class LoginController {
         MemberVO resultVO = service.loginCheck(vo);
         if(resultVO == null){
             resultMap.put("resultCode", 300);
-            resultMap.put("resultMsg", "아이디 또는 비밀번호가 올바르지 않습니다.");
+            resultMap.put("resultMsg", "아이디가 올바르지 않습니다.");
         }else{
-            if(resultVO.getStatus() == 3) {
-                resultMap.put("resultCode", 301);
-                resultMap.put("resultMsg", "이미 탈퇴한 회원입니다.");
-            }else if(resultVO.getStatus() == 0) {
-                resultMap.put("resultCode", 302);
-                resultMap.put("resultMsg", "인증이 되지않은 아이디입니다. 이메일 인증을 진행하세요.");
+
+            boolean match = passwordEncoder.matches(vo.getUserpwd(), resultVO.getUserpwd());
+
+            if(match) {
+                if (resultVO.getStatus() == 3) {
+                    resultMap.put("resultCode", 301);
+                    resultMap.put("resultMsg", "이미 탈퇴한 회원입니다.");
+                } else if (resultVO.getStatus() == 0) {
+                    resultMap.put("resultCode", 302);
+                    resultMap.put("resultMsg", "인증이 되지않은 아이디입니다. 이메일 인증을 진행하세요.");
+                } else {
+                    resultMap.put("resultCode", 200);
+                    ses.setAttribute("logStatus", "Y");
+                    ses.setMaxInactiveInterval(60 * 30);
+                    ses.setAttribute("userInfo", resultVO);
+                }
             }else {
-                resultMap.put("resultCode", 200);
-                ses.setAttribute("logStatus", "Y");
-                ses.setMaxInactiveInterval(60*30);
-                ses.setAttribute("userInfo", resultVO);
+                resultMap.put("resultCode", 401);
+                resultMap.put("resultMsg", "비밀번호를 확인해주십시오.");
             }
         }
         return resultMap;

@@ -55,6 +55,8 @@ dependencies {
     //compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.4.RELEASE'
 
     compile("org.springframework.boot:spring-boot-starter-mail")
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.4.RELEASE'
 }
 
 test {
