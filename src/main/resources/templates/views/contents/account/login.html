@@ -16,28 +16,45 @@
 
 <body>
 <div class="text-center">
-        <div style="margin-top:150px;"></div>
-        <div class="form-signin">
-            <a href="#" th:href="@{/}"><img src="/img/sunny_logo.png" style="width:200px"></a><br/>
-            <h3 class="form-signin-title">로그인하세요</h3>
-            <label for="userid" class="visually-hidden"></label>
-            <input type="text" name="userid" id="userid" class="form-control" placeholder="아이디를 입력하세요" required autofocus>
-            <label for="userpwd" class="visually-hidden"></label>
-            <input type="password" name="userpwd" id="userpwd" class="form-control" placeholder="비밀번호를 입력하세요" required>
-            <button class="w-100 btn btn-lg btn-primary" type="button" onclick="goLogin();">로그인</button><br/>
-            <a th:href="@{/account/signup}">아직 회원이 아니신가요?</a>
-            <p class="mt-5 mb-3 text-muted">&copy;2021</p>
-        </div>
+    <div style="margin-top:150px;"></div>
+    <div class="form-signin">
+        <form name="rsafrm" id="rsafrm">
+            <input type="hidden" id="rsaPublicKeyModulus" name="rsaPublicKeyModulus"  />
+            <input type="hidden" id="rsaPpublicKeyExponent" name="rsaPpublicKeyExponent" />
+        </form>
+        <form id="loginFrm">
+            <input type="hidden" name="securedUsername" id="securedUsername" value="" />
+            <input type="hidden" name="securedPassword" id="securedPassword" value="" />
+        </form>
+        <a href="#" th:href="@{/}"><img src="/img/sunny_logo.png" style="width:200px"></a><br/>
+        <h3 class="form-signin-title">로그인하세요</h3>
+        <label for="userid" class="visually-hidden"></label>
+        <input type="text" name="userid" id="userid" class="form-control" placeholder="아이디를 입력하세요" required autofocus>
+        <label for="userpwd" class="visually-hidden"></label>
+        <input type="password" name="userpwd" id="userpwd" class="form-control" placeholder="비밀번호를 입력하세요" required>
+        <button class="w-100 btn btn-lg btn-primary" type="button" onclick="goLogin();">로그인</button><br/>
+        <a th:href="@{/account/signup}">아직 회원이 아니신가요?</a>
+        <p class="mt-5 mb-3 text-muted">&copy;2021</p>
+    </div>
 </div>
 </body>
+
+<script type="text/javascript" th:src="@{/js/security/jsbn.js}"></script>
+<script type="text/javascript" th:src="@{/js/security/rsa.js}"></script>
+<script type="text/javascript" th:src="@{/js/security/prng4.js}"></script>
+<script type="text/javascript" th:src="@{/js/security/rng.js}"></script>
 <script>
 
 
     function goLogin() {
+
+        submitEncryptedForm(); // rsa 로 id / passwd 암호화
+
         var param = {
-            userid: $('#userid').val(),
-            userpwd: $('#userpwd').val()
+            userid: $('#securedUsername').val(),
+            userpwd: $('#securedPassword').val()
         }
+
         $.ajax({
             url : "/account/loginOk",
             data :param,
@@ -62,6 +79,36 @@
 
     }
 
+        function submitEncryptedForm() {
+            var securedLoginForm = document.getElementById('loginFrm');
+            var rsa = new RSAKey();
+            var rsaF = document.rsafrm;
+
+            rsa.setPublic(rsaF.rsaPublicKeyModulus.value, rsaF.rsaPpublicKeyExponent.value);
+            // 사용자ID와 비밀번호를 RSA로 암호화한다.
+            securedLoginForm.securedUsername.value = rsa.encrypt($("#userid").val());  // id 암호화
+            securedLoginForm.securedPassword.value = rsa.encrypt($("#userpwd").val());  // passwd 암호화
+        }
+
+    function getRsayKeys (){
+
+        $.ajax({
+            type : "post",
+            dataType: "json",
+            url : "/account/getRSAKeyValue"
+        }).done(function (data){
+            $('#rsaPublicKeyModulus').val(data.publicKeyModulus);
+            $('#rsaPpublicKeyExponent').val(data.publicKeyExponent);
+
+        }) .fail(function(error){
+            console.log(error);
+        });
+    }
+
+
+    $(document).ready(function() {
+        getRsayKeys();
+    });
 
 
 </script>

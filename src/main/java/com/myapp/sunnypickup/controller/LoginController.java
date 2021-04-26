@@ -1,5 +1,6 @@
 package com.myapp.sunnypickup.controller;
 
+import com.myapp.sunnypickup.security.ZRsaSecurity;
 import com.myapp.sunnypickup.service.LoginService;
 import com.myapp.sunnypickup.service.SendEmailService;
 import com.myapp.sunnypickup.vo.MemberVO;
@@ -17,9 +18,11 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.security.PrivateKey;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -264,9 +267,25 @@ public class LoginController {
 
     @RequestMapping(value="/loginOk", method=RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> loginOk(MemberVO vo, HttpSession ses) throws SQLException {
+    public Map<String, Object> loginOk(MemberVO vo, HttpSession ses) throws Exception {
         ModelAndView mav = new ModelAndView();
         Map<String, Object> resultMap = new HashMap<String, Object>();
+
+        //복호화를 진행하자...
+        ZRsaSecurity rsa = new ZRsaSecurity();
+        //복호화 할 개인키를 세션에서 가져온다.
+        PrivateKey privateKey = (PrivateKey) ses.getAttribute("_rsaPrivateKey_");
+
+        String username = vo.getUserid(); //암호화 된 아이디를 담고
+        String password = vo.getUserpwd(); //암호화 된 아이디를 담고
+
+        String userId = rsa.decryptRSA(privateKey, username);  // 복호화 후 담고,
+        String userKey = rsa.decryptRSA(privateKey, password);  // 복호화 하고 담고,
+
+        //복호화된 정보를 넣어준다
+        vo.setUserid(userId); // DB로 비교하기 위해서 복호화 된 아이디 / 패스워드를 다시 담아준다.
+        vo.setUserpwd(userKey);
+
         MemberVO resultVO = service.loginCheck(vo);
         if(resultVO == null){
             resultMap.put("resultCode", 300);
@@ -287,6 +306,8 @@ public class LoginController {
                     ses.setAttribute("logStatus", "Y");
                     ses.setMaxInactiveInterval(60 * 30);
                     ses.setAttribute("userInfo", resultVO);
+                    // 로그인이 성공하였으면, 키의 재사용을 막기 위해서, 개인키를 지워준다.
+                    ses.removeAttribute("_rsaPrivateKey_");
                 }
             }else {
                 resultMap.put("resultCode", 401);
@@ -295,5 +316,38 @@ public class LoginController {
         }
         return resultMap;
     }
+
+
+    @RequestMapping("/getRSAKeyValue")
+    @ResponseBody
+    public Map<String, Object> getRSAKeyValue(HttpServletRequest req, HttpServletResponse res) throws Exception {
+
+        Map<String,Object> resultMap = new HashMap<>();
+
+        try {
+
+            ZRsaSecurity zSecurity = new ZRsaSecurity();
+            PrivateKey privateKey = zSecurity.getPrivateKey();
+
+            HttpSession session = req.getSession();
+
+            if(session.getAttribute("_rsaPrivateKey_") !=null) {
+                session.removeAttribute("_rsaPrivateKey_");
+            }
+
+            session.setAttribute("_rsaPrivateKey_", privateKey);
+
+            String publicKeyModulus = zSecurity.getRsaPublicKeyModulus();
+            String publicKeyExponent = zSecurity.getRsaPublicKeyExponent();
+
+            resultMap.put("publicKeyModulus", publicKeyModulus);
+            resultMap.put("publicKeyExponent", publicKeyExponent);
+        }catch (Exception e){
+
+        }
+
+        return resultMap;
+    }
+
 
 }
