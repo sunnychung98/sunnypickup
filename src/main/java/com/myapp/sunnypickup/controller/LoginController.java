@@ -49,45 +49,9 @@ public class LoginController {
     @Autowired
     private SendEmailService sendEmailService;
 
-//    @Autowired
-//    public void setJavaMailSender(JavaMailSender javaMailSender) {
-//        this.javaMailSender = javaMailSender;
-//    }
+    @Value("E:/SpringBootProject/files/")
+    private String imageServerUrl;
 
-
-    @RequestMapping(value="/mails")
-    @ResponseBody
-    public Map<String, Object> test(MemberVO vo){
-
-        Map<String, Object> result = new HashMap<String, Object>();
-
-        String userid = "admin";
-        String email = "eveing2@naver.com";
-
-        System.out.println("유저아이디"+userid);
-        System.out.println("이메일주소"+email);
-
-        //random number 생성
-        String randomCode = RandomStringUtils.random(64);
-        vo.setRegcode(randomCode);
-
-        //이메일보내기
-        String emailSubject = "[Sunny]회원가입을 환영합니다!!";
-        String content = "email test";
-
-
-        try{
-
-            sendEmailService.sendEmail(email, emailSubject, content);
-            System.out.println("sent email....");
-            result.put("result", 200);
-
-        }catch(Exception e){
-            e.printStackTrace();
-            result.put("result", 500);
-        }
-        return result;
-    }
 
     @GetMapping("/signup")
     public ModelAndView signup(){
@@ -96,30 +60,19 @@ public class LoginController {
         return mav;
     }
 
-    @Value("E:/SpringBootProject/files/")
-    private String imageServerUrl;
-
 
     @PostMapping(value="/signupOk")
     public ModelAndView signupOk(MemberVO vo,
                                  @RequestParam(value="file") MultipartFile mf,
                                  HttpServletRequest request){
+
         ModelAndView mav = new ModelAndView();
         String userid = vo.getUserid();
         String email = vo.getEmail();
+        String username = vo.getUsername();
 
         System.out.println("유저아이디"+userid);
         System.out.println("이메일주소"+email);
-
-        //random number 생성
-        String randomCode = RandomStringUtils.randomAlphanumeric(12);
-        System.out.println("랜덤코드:"+randomCode);
-        vo.setRegcode(randomCode);
-
-
-        //이메일보내기
-        String emailSubject = "[Sunny]회원가입을 환영합니다!!";
-        String content = "email test";
 
 
         //파일업로드
@@ -131,13 +84,14 @@ public class LoginController {
         File f = new File(path+newProfileName);
         String siteURL = request.getRequestURL().toString();
 
+
         try{
             vo.setUserpwd(passwordEncoder.encode(vo.getUserpwd()));
 
             int result = service.addMember(vo);
 
             if(result>0){
-                sendVerificationEmail(vo, siteURL);
+                sendEmailService.sendEmail(email, username, userid);
                 try {
                     if (!f.exists()) {
                         if (f.getParentFile().mkdirs()) {
@@ -163,30 +117,6 @@ public class LoginController {
         return mav;
     }
 
-    @Autowired
-    private JavaMailSender mailSender;
-
-    public void sendVerificationEmail(MemberVO vo, String siteURL) throws UnsupportedEncodingException, MessagingException {
-        String subject="Pleaes verify your registration";
-        String senderName="Sunny Home";
-        String mailContent = "<p>Dear " + vo.getUserid() + ", </p>";
-        mailContent += "<p>Please click this to verify</p>";
-        String verifyURL = siteURL + "/statusChange?userid="+vo.getUserid();
-        mailContent += "<a = \"href="+ verifyURL + "\">VERIFY</a>";
-
-        mailContent += "<p>Thank you!</p>";
-
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-
-        helper.setFrom("sunnychungkr@gmail.com", senderName);
-        helper.setTo(vo.getEmail());
-        helper.setSubject(subject);
-
-        helper.setText(mailContent, true);
-        mailSender.send(message);
-
-    }
 
 
     @RequestMapping("/statusChange")
@@ -197,7 +127,7 @@ public class LoginController {
             int resultVO = service.statusChange(vo);
 
             if(resultVO>0){
-                mav.setViewName("views/contents/account/login");
+                mav.setViewName("views/contents/account/statusChangeResult");
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -289,7 +219,7 @@ public class LoginController {
         MemberVO resultVO = service.loginCheck(vo);
         if(resultVO == null){
             resultMap.put("resultCode", 300);
-            resultMap.put("resultMsg", "아이디가 올바르지 않습니다.");
+            resultMap.put("resultMsg", "아이디를 확인해주세요.");
         }else{
 
             boolean match = passwordEncoder.matches(vo.getUserpwd(), resultVO.getUserpwd());

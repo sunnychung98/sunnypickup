@@ -19,18 +19,8 @@ public class SendEmailService {
     @Autowired
     private SpringTemplateEngine templateEngine;
 
-    public void sendEmail(String to, String body, String topic){
-      /*  System.out.println("sending mail...");
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+    public void sendEmail(String email, String username, String userid){
 
-        simpleMailMessage.setFrom("oboksobok.kr@gmail.com");
-        simpleMailMessage.setTo(to);
-        simpleMailMessage.setSubject(topic);
-        simpleMailMessage.setText(body);
-
-
-        javaMailSender.send(simpleMailMessage);
-        System.out.println("sent email..");*/
 
         try {
 
@@ -38,13 +28,14 @@ public class SendEmailService {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
             //메일 제목 설정
-            helper.setSubject("스프링 부트 메일 전송");
+            helper.setSubject("메일테스트|"+username+"님 이메일 인증을 해주세요!");
             //수신자 설정
-            helper.setTo("eveing2@naver.com");
+            helper.setTo(email);
             //템플릿에 전달할 데이터 설정
             Context context = new Context();
-            context.setVariable("authKey", "test_value");
-            context.setVariable("confirmUrl", "http://localhost:8082/main");
+            context.setVariable("username", username);
+            context.setVariable("userid", userid);
+            context.setVariable("confirmUrl", "http://localhost:8082/account/statusChange?userid="+userid);
             //메일 내용 설정 : 템플릿 프로세스
             String html = templateEngine.process("mail-template", context);
             helper.setText(html, true);

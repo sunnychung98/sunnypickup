@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new ProcessInterceptor())
-                .addPathPatterns("/*")
+
                 .addPathPatterns("/mypage/*")
                 .addPathPatterns("/homeboard/formOk")
                 .addPathPatterns("/homeboard/edit")
@@ -57,15 +57,5 @@ public class WebConfig implements WebMvcConfigurer {
         //jsonView
         return new MappingJackson2JsonView();
     }
-
-
-//    @Bean public JavaMailSenderImpl mailSender() {
-//        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-//        javaMailSender.setProtocol("smtp");
-//        javaMailSender.setHost("127.0.0.1");
-//        javaMailSender.setPort(25);
-//        return javaMailSender;
-//    }
-
 
 }

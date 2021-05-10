@@ -15,16 +15,10 @@ public class HomeboardService {
 
     private HomeboardMapper mapper;
 
-
-
-
     @Autowired
     public void setHomeboardMapper(HomeboardMapper homeboardMapper){
         this.mapper=homeboardMapper;
     }
-
-
-
 
     public  int getTotalBoardCount(Map<String, Object> param) throws SQLException {
         return mapper.getTotalBoardCount(param);

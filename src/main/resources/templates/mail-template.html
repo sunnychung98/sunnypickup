@@ -3,16 +3,86 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
+<style type="text/css">
+    body{background-color:#d4d4d4; margin: 0px;}
+</style>
 <body>
-<div align="center">
-    <h1>회원가입을 축하드립니다!!!</h1>
-</div>
-<div align="center">
-    <h1><span th:text="${authKey}"></span></h1>
-</div>
-<div align="center">
-  인증 url : <a th:href="${confirmUrl}"><span th:text="${confirmUrl}"></span></a>
-</div>
+
+<table border="0" width="50%" style="margin:auto;padding:30px;background-color: #F3F3F3;border:1px solid #FF7A5A;">
+    <tr>
+        <td>
+            <table border="0" width="100%">
+                <tr>
+                    <td>
+                        <h1>Sunny</h1>
+                    </td>
+                    <td>
+                        <p style="text-align: right;"><a href="#" target="_blank" style="text-decoration: none;">Go to Website</a></p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table border="0" cellpadding="0" cellspacing="0" style="text-align:center;width:100%;background-color: #fff;">
+                <tr>
+                    <td style="background-color:#FF7A5A;height:100px;font-size:50px;color:#fff;"><i class="fa fa-envelope-o" aria-hidden="true"></i></td>
+                </tr>
+                <tr>
+                    <td>
+                        <h1 style="padding-top:25px;">이메일 인증</h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p style="padding:0px 100px;">
+                        <h3><span th:text="${username}">회원</span>님 회원가입을 축하드립니다!!!</h3>
+                        아래 인증 버튼을 눌러 회원가입을 완료해주세요.
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a th:href="${confirmUrl}" href="http://naver.com">
+                        <button style="margin:10px 0px 30px 0px;border-radius:4px;padding:10px 20px;border: 0;color:#fff;background-color:#FF7A5A; ">Verify Email address</button>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table border="0" width="100%" style="border-radius: 5px;text-align: center;">
+                <tr>
+                    <td>
+                        <h3 style="margin-top:10px;"></h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="margin-top:20px;">
+
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="margin-top: 20px;">
+                            <span style="font-size:12px;">Sunny!</span><br>
+                            <span style="font-size:12px;">Copyright © 2021 </span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 
 </body>
 </html>
+
+
+
+
