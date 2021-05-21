@@ -20,12 +20,12 @@ public interface HomeboardMapper {
     //입력
     int insertHomeboard(HomeboardVO vo) throws SQLException;
     //조회
-    List<HomeboardVO> homeboardSelect(int param) throws SQLException;
+    HomeboardVO homeboardSelect(int param) throws SQLException;
     //수정
     int homeboardEdit(HomeboardVO vo) throws SQLException;
     //삭제
     int homeboardDelete(int param) throws SQLException;
-
+    //메인
     List<HomeboardVO> getBoardListForMain(Map<String, Object> param) throws SQLException;
 }
 

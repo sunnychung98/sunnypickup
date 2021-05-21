@@ -38,6 +38,37 @@ public class HomeboardCommentController {
         return commentList;
     }
 
+    //집들이- 새로운 댓글쓰기
+    @RequestMapping(value="/commentWrite", method= RequestMethod.GET)
+    @ResponseBody
+    public int commentInsert(HomeboardCommentVO vo, HttpSession ses) throws Exception {
+        int result = service.commentInsert(vo);
+
+        return result;
+    }
+
+    //집들이- 댓글수정하기
+    @RequestMapping(value="/commentEdit")
+    @ResponseBody
+    public int commentEdit(HomeboardCommentVO vo) throws Exception {
+
+        int result = service.commentEdit(vo);
+
+        return result;
+    }
+
+    //댓글 삭제하기
+    @RequestMapping(value="/commentDel")
+    @ResponseBody
+    public int commentDelete(int hbcno) throws Exception {
+
+        int result = service.commentDel(hbcno);
+
+        return result;
+    }
+
+
+
 
 
 

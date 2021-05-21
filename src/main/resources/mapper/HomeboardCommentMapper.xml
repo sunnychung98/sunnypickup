@@ -6,11 +6,34 @@
         select hb_c_no as hbcno,
                b_no as bno,
                userid,
-               hb_comment as bhcomment,
+               hb_comment as hbcomment,
                DATE_FORMAT(writedate, '%Y-%m-%d') writedate
         from hb_comment
         order by hb_c_no desc
     </select>
+
+    <!-- 댓글쓰기 -->
+    <insert id="commentInsert" parameterType="com.myapp.sunnypickup.vo.HomeboardCommentVO"
+    useGeneratedKeys="true" keyProperty="hbcno">
+        insert into hb_comment(b_no,
+                               userid,
+                               hb_comment,
+                               writedate)
+        values(#{bno}, #{userid}, #{hbcomment}, now())
+    </insert>
+
+
+    <!-- 댓글 수정하기 -->
+    <update id="commentEdit" parameterType="com.myapp.sunnypickup.vo.HomeboardCommentVO">
+        update hb_comment
+        set hb_comment=#{hbcomment} where hb_c_no=#{hbcno}
+    </update>
+
+
+    <!-- 댓글 삭제하기 -->
+    <delete id="commentDel" parameterType="int">
+        delete from hb_comment where hb_c_no=#{hbcno}
+    </delete>
 
 
 </mapper>

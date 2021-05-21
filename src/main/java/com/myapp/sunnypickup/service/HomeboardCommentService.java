@@ -26,5 +26,17 @@ public class HomeboardCommentService {
         return mapper.getCommentList(bno);
     }
 
+    public int commentInsert(HomeboardCommentVO vo) throws Exception{
+        return mapper.commentInsert(vo);
+    }
+
+    public int commentEdit(HomeboardCommentVO vo) throws Exception{
+        return mapper.commentEdit(vo);
+    }
+
+    public int commentDel(int bno) throws Exception{
+        return mapper.commentDel(bno);
+    }
+
 
 }

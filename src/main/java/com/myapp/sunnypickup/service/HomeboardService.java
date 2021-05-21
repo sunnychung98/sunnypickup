@@ -31,7 +31,7 @@ public class HomeboardService {
         return mapper.insertHomeboard(vo);
     }
 
-    public List<HomeboardVO> homeboardSelect(int param) throws Exception{
+    public HomeboardVO homeboardSelect(int param) throws Exception{
         return mapper.homeboardSelect(param);
     }
 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myapp.sunnypickup.mapper.AddressMapper">
+
+
+    <select id="getBoardList" parameterType="java.util.Map" resultType="com.myapp.sunnypickup.vo.AddressVO">
+        select a_no as bno,
+               userid,
+               receiver,
+               contact,
+               postal_code as postalCode,
+               address,
+               extra_address as extraAddress,
+               detail_address as detailAddress,
+               DATE_FORMAT(writedate, '%Y-%m-%d') writedate
+        from address
+        order by a_no desc
+    </select>
+
+    <!-- 주소 입력하기 -->
+    <insert id="insertAddress" parameterType="com.myapp.sunnypickup.vo.AddressVO"
+            useGeneratedKeys="true" keyProperty="ano">
+
+        INSERT INTO address( userid,
+                              receiver,
+                               contact,
+                               postal_code,
+                               extra_address,
+                               detail_address,
+                               writedate)
+        values (#{userid}, #{receiver}, #{conctact}, #{postalCode},
+                #{extraAddress}, #{detailAddress},now())
+
+    </insert>
+
+
+
+</mapper>

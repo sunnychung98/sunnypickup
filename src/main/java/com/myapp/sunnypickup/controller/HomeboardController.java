@@ -111,18 +111,31 @@ public class HomeboardController {
     }
 
     @GetMapping("/view")
-    public ModelAndView homeboardView(@RequestParam(required = false) int bno){
+    public ModelAndView homeboardView(@RequestParam(required = false) int bno, HttpServletRequest request){
         ModelAndView mav = new ModelAndView();
+        HttpSession ses = request.getSession();
+
+
+
 
         try {
-            List<HomeboardVO> list = service.homeboardSelect(bno);
+            HomeboardVO list = service.homeboardSelect(bno);
             mav.addObject("list", list);
+            if(ses!=null) {
+                MemberVO vo = (MemberVO) ses.getAttribute("userInfo");
+                String loginId = vo.getUserid();
+                mav.addObject("loginId", loginId);
+            }
+
 
         }catch(Exception e){
             e.printStackTrace();
         }
 
         mav.setViewName("views/contents/homeboard/homeboardView");
+
+
+
         return mav;
 
     }
@@ -132,7 +145,7 @@ public class HomeboardController {
         ModelAndView mav = new ModelAndView();
 
         try{
-            List<HomeboardVO> list = service.homeboardSelect(bno);
+            HomeboardVO list = service.homeboardSelect(bno);
             mav.addObject("list", list);
         }catch(Exception e){
             e.printStackTrace();
