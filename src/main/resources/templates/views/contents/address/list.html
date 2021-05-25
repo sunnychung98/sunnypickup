@@ -6,7 +6,8 @@
 
         <div class="text-center py-5 px-3">
             <h2>주소입력 게시판</h2>
-            <div>총건수: <span th:text="${size}"></span></div>
+            <div>총건수: <span th:if="${size!=null}" th:text="${size}"></span><span th:if="${size==null}" th:text="0"></span></div>
+            <br/>
             <div>
                 <table class="table table-striped table-hover">
                     <thead>
@@ -21,7 +22,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="address : ${list}">
-                        <td th:text="${address.ano"></td>
+                        <td th:text="${address.ano}"></td>
                         <td th:text="${address.userid}"></td>
                         <td th:text="${address.receiver}"></td>
                         <td th:text="${address.contact}"></td>

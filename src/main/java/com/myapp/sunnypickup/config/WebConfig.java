@@ -28,6 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/homeboard/formOk")
                 .addPathPatterns("/homeboard/edit")
                 .addPathPatterns("/homeboard/editOk")
+                .addPathPatterns("/address/form")
                 .excludePathPatterns("/")
                 .excludePathPatterns("/account/*")
                 .excludePathPatterns("/qna/*")

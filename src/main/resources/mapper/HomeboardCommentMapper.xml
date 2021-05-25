@@ -9,6 +9,7 @@
                hb_comment as hbcomment,
                DATE_FORMAT(writedate, '%Y-%m-%d') writedate
         from hb_comment
+        where b_no= #{bno}
         order by hb_c_no desc
     </select>
 

@@ -3,8 +3,8 @@
 <mapper namespace="com.myapp.sunnypickup.mapper.AddressMapper">
 
 
-    <select id="getBoardList" parameterType="java.util.Map" resultType="com.myapp.sunnypickup.vo.AddressVO">
-        select a_no as bno,
+    <select id="getAddressList" parameterType="java.util.Map" resultType="com.myapp.sunnypickup.vo.AddressVO">
+        select a_no as ano,
                userid,
                receiver,
                contact,
@@ -25,10 +25,11 @@
                               receiver,
                                contact,
                                postal_code,
+                                address,
                                extra_address,
                                detail_address,
                                writedate)
-        values (#{userid}, #{receiver}, #{conctact}, #{postalCode},
+        values (#{userid}, #{receiver}, #{contact}, #{postalCode},#{address},
                 #{extraAddress}, #{detailAddress},now())
 
     </insert>
